@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Vivero | Plantas para tu hogar</title>
+  <meta name="description" content="Venta de plantas de interior, exterior y suculentas. Pide por WhatsApp.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>🌱 Mi Vivero</h1>
+    <button id="btnCarrito" class="btn-carrito">
+      🛒 Carrito (<span id="contador">0</span>)
+    </button>
+  </header>
+
+  <section class="hero">
+    <h2>Plantas que dan vida a tu espacio</h2>
+    <p>Elige tus plantas favoritas y haz tu pedido por WhatsApp.</p>
+  </section>
+
+  <main class="contenedor">
+    <div class="filtros" id="filtros"></div>
+    <div class="grid" id="catalogo"></div>
+  </main>
+
+  <!-- Panel del carrito -->
+  <aside id="panelCarrito" class="panel">
+    <div class="panel-cabecera">
+      <h3>Tu pedido</h3>
+      <button id="btnCerrar">✖</button>
+    </div>
+    <div id="itemsCarrito"></div>
+    <p class="total">Total: S/ <span id="total">0</span></p>
+    <input type="text" id="nombreCliente" placeholder="Tu nombre">
+    <button id="btnPedir" class="btn-whatsapp">Enviar pedido por WhatsApp</button>
+    <button id="btnVaciar" class="btn-secundario">Vaciar carrito</button>
+  </aside>
+
+  <footer class="footer">
+    <p>© 2026 Mi Vivero · Contáctanos por WhatsApp</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nombre": "Monstera Deliciosa",
+    "categoria": "Interior",
+    "precio": 45,
+    "descripcion": "Hojas grandes y perforadas. Luz indirecta, riego moderado.",
+    "icono": "🌿",
+    "imagen": ""
+  },
+  {
+    "id": 2,
+    "nombre": "Echeveria",
+    "categoria": "Suculentas",
+    "precio": 8,
+    "descripcion": "Suculenta en forma de rosa. Poco riego, mucho sol.",
+    "icono": "🪴",
+    "imagen": ""
+  },
+  {
+    "id": 3,
+    "nombre": "Cactus Mix (set de 3)",
+    "categoria": "Suculentas",
+    "precio": 20,
+    "descripcion": "Tres cactus pequeños en maceta de barro.",
+    "icono": "🌵",
+    "imagen": ""
+  },
+  {
+    "id": 4,
+    "nombre": "Lavanda",
+    "categoria": "Exterior",
+    "precio": 15,
+    "descripcion": "Aromática, atrae polinizadores. Pleno sol.",
+    "icono": "💜",
+    "imagen": ""
+  }
+]

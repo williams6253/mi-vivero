@@ -1,0 +1,143 @@
+:root {
+  --verde: #2f7d4f;
+  --verde-oscuro: #1f5c38;
+  --crema: #f6f3ea;
+  --texto: #25302a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: var(--crema);
+  color: var(--texto);
+}
+
+.header {
+  background: var(--verde);
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.btn-carrito {
+  background: white;
+  color: var(--verde-oscuro);
+  border: none;
+  padding: .6rem 1rem;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #d9efdf, #f6f3ea);
+}
+.hero h2 { font-size: 2rem; margin-bottom: .5rem; }
+
+.contenedor { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+.filtros { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.filtros button {
+  padding: .5rem 1rem;
+  border: 2px solid var(--verde);
+  background: transparent;
+  color: var(--verde);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.filtros button.activo { background: var(--verde); color: white; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  display: flex;
+  flex-direction: column;
+}
+.card .foto {
+  height: 160px;
+  display: grid;
+  place-items: center;
+  font-size: 4rem;
+  background: #e6f2e9;
+}
+.card .foto img { width: 100%; height: 100%; object-fit: cover; }
+.card .info { padding: 1rem; display: flex; flex-direction: column; gap: .4rem; flex: 1; }
+.card .cat { font-size: .75rem; color: var(--verde); text-transform: uppercase; font-weight: bold; }
+.card .precio { font-size: 1.3rem; font-weight: bold; margin-top: auto; }
+.card button {
+  background: var(--verde);
+  color: white;
+  border: none;
+  padding: .7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.card button:hover { background: var(--verde-oscuro); }
+
+/* Panel del carrito */
+.panel {
+  position: fixed;
+  top: 0; right: -420px;
+  width: min(100%, 400px);
+  height: 100%;
+  background: white;
+  box-shadow: -4px 0 20px rgba(0,0,0,.2);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  transition: right .3s;
+  z-index: 20;
+  overflow-y: auto;
+}
+.panel.abierto { right: 0; }
+.panel-cabecera { display: flex; justify-content: space-between; align-items: center; }
+.panel-cabecera button { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: .6rem;
+}
+.item .cant button {
+  width: 28px; height: 28px;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.total { font-size: 1.3rem; font-weight: bold; }
+.panel input { padding: .7rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+
+.btn-whatsapp {
+  background: #25d366; color: white; border: none;
+  padding: .9rem; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem;
+}
+.btn-secundario {
+  background: transparent; border: 1px solid #aaa;
+  padding: .6rem; border-radius: 8px; cursor: pointer;
+}
+
+.footer { text-align: center; padding: 2rem; color: #666; }
