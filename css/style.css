@@ -141,3 +141,66 @@ body {
 }
 
 .footer { text-align: center; padding: 2rem; color: #666; }
+
+/* ----- Navegación del cliente ----- */
+.migas { margin-bottom: 1.2rem; font-weight: 600; }
+.migas a { color: var(--verde); text-decoration: none; }
+.migas a:hover { text-decoration: underline; }
+
+.header h1 a { color: white; text-decoration: none; }
+
+a.card.enlace { text-decoration: none; color: inherit; transition: transform .15s; }
+a.card.enlace:hover { transform: translateY(-4px); }
+.ver { margin-top: auto; color: var(--acento); font-weight: bold; }
+
+.card button:disabled { background: #999; cursor: not-allowed; }
+
+/* ----- Panel del dueño ----- */
+.btn-link { color: white; margin-right: 1rem; }
+
+.caja {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,.08);
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+}
+.caja label { display: block; margin-bottom: .8rem; font-weight: 600; }
+.caja input:not([type=checkbox]):not([type=file]),
+.caja textarea,
+.caja select {
+  width: 100%;
+  padding: .6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font: inherit;
+  margin-top: .25rem;
+}
+.caja .check { display: flex; align-items: center; gap: .5rem; }
+.caja button[type=submit] {
+  background: var(--verde); color: white; border: none;
+  padding: .7rem 1.2rem; border-radius: 8px; font-weight: bold; cursor: pointer;
+}
+.acciones { display: flex; gap: .5rem; }
+.ayuda { color: #555; margin-bottom: 1rem; }
+.error { color: #b91c1c; margin-top: .5rem; }
+
+.fila {
+  background: white; border-radius: 10px; padding: .7rem;
+  display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
+  margin-bottom: .6rem; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.fila-info { flex: 1; min-width: 140px; }
+.fila-botones { display: flex; gap: .4rem; flex-wrap: wrap; }
+.fila-botones button {
+  padding: .45rem .8rem; border: none; border-radius: 6px;
+  background: var(--verde); color: white; cursor: pointer; font-weight: 600;
+}
+.fila-botones .btn-secundario { background: #e5e7eb; color: #222; }
+.fila-botones .btn-peligro { background: #b91c1c; }
+
+.mini {
+  width: 56px; height: 56px; object-fit: cover; border-radius: 8px;
+  background: #e6f2e9; display: grid; place-items: center; font-size: 1.6rem;
+}

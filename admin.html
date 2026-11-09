@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel del vivero</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>🔧 Panel del vivero</h1>
+    <div>
+      <a href="index.html" class="btn-link">Ver tienda</a>
+      <button id="btnSalir" class="btn-carrito oculto">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="contenedor">
+
+    <section id="login" class="caja oculto">
+      <h2>Iniciar sesión</h2>
+      <form id="formLogin">
+        <label>Correo <input type="email" id="email" required></label>
+        <label>Contraseña <input type="password" id="password" required></label>
+        <button type="submit">Entrar</button>
+        <p id="msgLogin" class="error"></p>
+      </form>
+    </section>
+
+    <section id="panel" class="oculto">
+      <nav id="migas" class="migas"></nav>
+      <h2 id="titulo"></h2>
+      <p id="ayuda" class="ayuda"></p>
+      <form id="formulario" class="caja"></form>
+      <div id="lista"></div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
