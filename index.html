@@ -3,45 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Vivero Carnívoro | Plantas carnívoras</title>
-  <meta name="description" content="Venta de plantas carnívoras y más. Pedidos por WhatsApp.">
+  <title>Amazonia Verde | Plantas para tu espacio</title>
+  <meta name="description" content="Plantas carnívoras seleccionadas y guía de cuidados. Pide por WhatsApp.">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
   <header class="header">
-    <h1><a href="#/">🪤 Mi Vivero Carnívoro</a></h1>
+    <div class="marca">
+      <img class="logo-imagen logo-header" src="img/logo-amazonia-verde.jpg" alt="Logo de Amazonia Verde">
+      <div>
+        <p class="marca-kicker">Cultivamos vida</p>
+        <h1><a href="#/">Amazonia Verde</a></h1>
+      </div>
+    </div>
     <button id="btnCarrito" class="btn-carrito">
-      🛒 Carrito (<span id="contador">0</span>)
+      <span aria-hidden="true">🛒</span> Carrito (<span id="contador">0</span>)
     </button>
   </header>
 
   <section class="hero">
-    <h2>Encuentra tu próxima planta</h2>
-    <p>Elige una categoría, escoge tu variedad y pide por WhatsApp.</p>
+    <div class="hero-contenido">
+      <img class="logo-imagen logo-hero" src="img/logo-amazonia-verde.jpg" alt="Amazonia Verde">
+      <p class="eyebrow">Plantas únicas para espacios con personalidad</p>
+      <h2>Encuentra tu próxima planta favorita</h2>
+      <p>Explora nuestra colección, aprende a cuidarla y recíbela lista para crecer contigo.</p>
+      <a class="hero-accion" href="#vista">Explorar colección <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="hero-hojas" aria-hidden="true">🌱</div>
   </section>
 
   <main class="contenedor">
-    <nav id="migas" class="migas"></nav>
+    <nav id="migas" class="migas" aria-label="Navegación de catálogo"></nav>
     <div id="vista" class="grid"></div>
   </main>
 
-  <!-- Si ya agregaste tu sección <section class="guia">, déjala aquí -->
+  <section class="beneficios contenedor" aria-label="Beneficios de Amazonia Verde">
+    <div><span aria-hidden="true">🌱</span><strong>Plantas seleccionadas</strong><small>Elegidas para crecer sanas.</small></div>
+    <div><span aria-hidden="true">💧</span><strong>Guía de cuidados</strong><small>Te acompañamos paso a paso.</small></div>
+    <div><span aria-hidden="true">💬</span><strong>Pedido fácil</strong><small>Compra directamente por WhatsApp.</small></div>
+  </section>
 
-  <aside id="panelCarrito" class="panel">
+  <aside id="panelCarrito" class="panel" aria-label="Carrito de compra">
     <div class="panel-cabecera">
-      <h3>Tu pedido</h3>
-      <button id="btnCerrar">✖</button>
+      <div><p class="eyebrow">Tu selección</p><h3>Tu pedido</h3></div>
+      <button id="btnCerrar" aria-label="Cerrar carrito">✕</button>
     </div>
     <div id="itemsCarrito"></div>
-    <p class="total">Total: <span id="total">0</span></p>
-    <input type="text" id="nombreCliente" placeholder="Tu nombre">
+    <p class="total">Total: <span id="total">S/ 0.00</span></p>
+    <input type="text" id="nombreCliente" placeholder="Tu nombre" aria-label="Tu nombre">
     <button id="btnPedir" class="btn-whatsapp">Enviar pedido por WhatsApp</button>
     <button id="btnVaciar" class="btn-secundario">Vaciar carrito</button>
   </aside>
 
   <footer class="footer">
-    <p>© 2026 Mi Vivero Carnívoro</p>
+    <p>© 2026 Amazonia Verde · Plantas que dan vida</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -4,39 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Panel del vivero</title>
+  <title>Panel de gestión | Amazonia Verde</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
   <header class="header">
-    <h1>🔧 Panel del vivero</h1>
-    <div>
+    <div class="marca">
+      <img class="logo-imagen logo-header" src="img/logo-amazonia-verde.jpg" alt="Logo de Amazonia Verde">
+      <div>
+        <p class="marca-kicker">Amazonia Verde</p>
+        <h1>Panel de gestión</h1>
+      </div>
+    </div>
+    <div class="header-acciones">
       <a href="index.html" class="btn-link">Ver tienda</a>
       <button id="btnSalir" class="btn-carrito oculto">Cerrar sesión</button>
     </div>
   </header>
 
-  <main class="contenedor">
-
-    <section id="login" class="caja oculto">
+  <main class="contenedor admin-main">
+    <section id="login" class="caja oculto login-card">
+      <p class="eyebrow">Acceso privado</p>
       <h2>Iniciar sesión</h2>
+      <p class="ayuda">Administra tus categorías, variedades, precios y stock.</p>
       <form id="formLogin">
         <label>Correo <input type="email" id="email" required></label>
         <label>Contraseña <input type="password" id="password" required></label>
-        <button type="submit">Entrar</button>
+        <button type="submit">Entrar al panel</button>
         <p id="msgLogin" class="error"></p>
       </form>
     </section>
 
     <section id="panel" class="oculto">
       <nav id="migas" class="migas"></nav>
+      <p class="eyebrow">Administración</p>
       <h2 id="titulo"></h2>
       <p id="ayuda" class="ayuda"></p>
       <form id="formulario" class="caja"></form>
       <div id="lista"></div>
     </section>
-
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
