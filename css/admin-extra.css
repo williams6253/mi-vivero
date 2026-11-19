@@ -61,3 +61,53 @@
 .reclamo-admin p{white-space:pre-wrap;overflow-wrap:anywhere}.reclamo-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .reclamo-admin label{display:grid;gap:6px;font-weight:700;margin:12px 0}.reclamo-admin textarea{width:100%;padding:10px;border:1px solid #d8e4d9;border-radius:10px;font:inherit;resize:vertical}
 @media(max-width:600px){.reclamo-admin header{align-items:flex-start;flex-direction:column}.reclamo-admin-grid{grid-template-columns:1fr}}
+
+/* Navegación adaptable del panel */
+.admin-nav-toggle{display:none;align-items:center;justify-content:center;gap:.4rem;padding:.55rem .8rem;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font:inherit;font-weight:800;cursor:pointer;white-space:nowrap}
+.admin-nav-backdrop{display:none}
+@media(max-width:992px){
+ .admin-nav-toggle{display:inline-flex}
+ .admin-sidebar.mobile-open{display:flex;position:fixed;top:var(--header-height);left:0;width:min(84vw,320px);height:calc(100dvh - var(--header-height));z-index:101;padding:1rem;overflow:auto;box-shadow:var(--shadow-md)}
+ .admin-nav-backdrop:not(.oculto){display:block;position:fixed;inset:var(--header-height) 0 0;z-index:99;background:rgba(8,30,20,.48)}
+ .admin-sidebar.mobile-open nav a{min-height:56px}
+}
+@media(max-width:600px){
+ .admin-header{padding:0 .7rem;gap:.4rem}
+ .admin-brand{gap:.5rem;min-width:0}.admin-brand img{width:36px;height:36px}.admin-brand span{font-size:.95rem}.admin-brand small{font-size:.58rem}
+ .admin-nav-toggle{padding:.5rem .65rem;font-size:.82rem}
+ .admin-actions{gap:.45rem}.admin-actions .btn-link{display:none}
+ .admin-header #btnSalir{padding:.5rem .7rem;font-size:.78rem}
+}
+
+/* En móvil, las secciones del panel se muestran siempre bajo la cabecera */
+@media(max-width:992px){
+ .admin-nav-toggle{display:none!important}
+ .admin-nav-backdrop{display:none!important}
+ .admin-shell{display:flex;flex-direction:column}
+ .admin-sidebar{display:flex;position:sticky;top:var(--header-height);z-index:90;width:100%;height:auto;max-height:none;padding:.6rem;background:#fff;border-right:0;border-bottom:1px solid var(--line-color)}
+ .admin-sidebar nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem}
+ .admin-sidebar nav a{min-width:0;min-height:50px;padding:.45rem .55rem;gap:.4rem;border-radius:12px;font-size:.83rem}
+ .admin-sidebar nav a span{min-width:0;line-height:1.1}
+ .admin-sidebar nav a span small{display:block;margin-top:3px;font-size:.58rem;line-height:1.1}
+ .admin-sidebar .side-card{display:none}
+ .admin-main{width:100%}
+}
+@media(max-width:600px){
+ .admin-sidebar{padding:.5rem}
+ .admin-sidebar nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:.35rem}
+ .admin-sidebar nav a{min-height:48px;padding:.45rem .55rem}
+}
+
+.foto-admin-item{position:relative;flex:0 0 108px;width:108px;height:130px;overflow:hidden;border:2px solid #d8e8da;border-radius:12px;background:#f4f8f4}
+.foto-admin-item img{display:block;width:100%;height:100%;object-fit:cover}
+.admin-card .foto-admin-preview .foto-admin-item > button.foto-admin-quitar{position:absolute!important;top:1px!important;right:1px!important;z-index:5;display:grid;place-items:center;width:17px!important;min-width:17px;height:17px!important;min-height:17px;padding:0!important;margin:0!important;border:1px solid #fff;border-radius:50%;background:rgba(166,48,48,.94);color:#fff;font-family:Arial,sans-serif;font-size:12px;line-height:1;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.admin-card .foto-admin-preview .foto-admin-item > button.foto-admin-quitar:hover,.admin-card .foto-admin-preview .foto-admin-item > button.foto-admin-quitar:focus-visible{background:#831818;transform:scale(1.04);outline:1px solid #fff;outline-offset:0}
+.foto-admin-thumb{cursor:zoom-in;transition:transform .18s,filter .18s}
+.foto-admin-thumb:hover{filter:brightness(.94);transform:scale(.97)}
+.modal-crop .modal-content img#imgFull{display:block;max-width:min(88vw,1200px)!important;max-height:78vh;object-fit:contain;margin:0 auto;cursor:zoom-out}
+.admin-welcome{background:linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.82) 53%,rgba(255,255,255,.2) 100%),url("../img/fondos/Jardín tropical con cascada y estanque.png") center/cover no-repeat}
+#login .password-control{position:relative}
+#login .password-control input{padding-right:6.2rem}
+#login .password-control>.password-toggle{position:absolute;top:50%;right:9px;transform:translateY(-50%);width:auto;min-width:0;margin:0;padding:.42rem .7rem;border:1px solid #cbdccf;border-radius:999px;background:#e7f3e9;color:#145c38;font:700 .8rem/1.1 'Nunito Sans',sans-serif;cursor:pointer;box-shadow:none}
+#login .password-control>.password-toggle:hover{transform:translateY(-50%);background:#d5ead9;color:#0e4430}
+#login .password-control>.password-toggle:focus-visible{outline:2px solid #1f6b43;outline-offset:2px}

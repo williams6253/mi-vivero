@@ -7,7 +7,7 @@ const fecha = d => d ? new Date(d).toLocaleString('es-PE', {day:'2-digit', month
 const ESTADOS = ['Pendiente', 'Confirmado', 'En camino', 'Entregado', 'Cancelado'];
 const VENDIDO = ['Confirmado', 'En camino', 'Entregado'];
 const TAM = ['Pequeño', 'Mediano', 'Grande'];
-let editId = null, cur = {}, cache = {}, PRES = {}, cropper = null, photoQueue = [], pendingPhotos = [];
+let editId = null, cur = {}, cache = {}, PRES = {}, cropper = null, photoQueue = [], pendingPhotos = [], pendingPhotoUrls = [];
 // [campo, etiqueta, tipo, obligatorio]
 const FORMS = {
   categorias: [['nombre','Nombre','text',1],['descripcion','Descripción','textarea']],
@@ -32,16 +32,35 @@ function nuevaClasificacion(opts) {
   return `<div id="nuevaClasificacion" class="clasificacion-nueva oculto"><h4>Agregar categoría y familia</h4><p>Elige una categoría existente para añadirle una familia, o crea ambas.</p><label>Categoría existente o nueva<select id="categoriaNuevaSelect"><option value="">Seleccionar categoría existente…</option>${(opts.categorias || []).map(c => `<option value="${c.id}">${esc(c.nombre)}</option>`).join('')}<option value="__newcat">＋ Crear categoría nueva</option></select></label><label id="nombreCategoriaWrap" class="oculto">Nombre de la categoría nueva<input id="nombreCategoriaNueva" placeholder="Ej. Árboles"></label><label>Nueva familia<input id="nombreFamiliaNueva" placeholder="Ej. Mandarinas"></label></div>`;
 }
 const tamBlock = v => `<div class="tam-box"><h4>Tamaños y precios <small>(precio vacío = «Pronto» · stock vacío = sin límite)</small></h4>${TAM.map((n, i) => { const r = (PRES[v.id] || []).find(x => x.tamano === n) || {}; return `<div class="tam-row"><b>${n}</b><input name="precio_${i}" type="number" step="any" min="0" placeholder="Precio (Pronto)" value="${r.precio ?? ''}"><input name="stock_${i}" type="number" min="0" placeholder="Stock (sin límite)" value="${r.stock ?? ''}"><input name="detalle_${i}" placeholder="Nota (ej. Cormo)" value="${esc(r.detalle || '')}"></div>`; }).join('')}</div>`;
+function fotosActualesHtml(tbl, vals) {
+  if (tbl === 'variedades' || tbl === 'categorias') return '<div id="fotosExistentes" class="foto-admin-preview"></div>';
+  return vals.imagen_url ? '<div class="foto-admin-preview"><img src="' + esc(vals.imagen_url) + '" alt="Foto actual"></div>' : '';
+}
+function pintarFotosExistentes() {
+  const box = $('fotosExistentes'); if (!box) return;
+  const fotos = cur.tbl === 'variedades' ? (cur.vals.fotos || []) : (cur.vals.imagen_url ? [cur.vals.imagen_url] : []);
+  box.innerHTML = fotos.map((url, i) => '<div class="foto-admin-item"><img class="mini foto-admin-thumb" src="' + esc(url) + '" alt="Foto actual ' + (i + 1) + '" title="Toca para ampliar"><button type="button" class="foto-admin-quitar" data-act="removePhoto" data-source="existing" data-index="' + i + '" aria-label="Eliminar foto ' + (i + 1) + '" title="Eliminar foto">×</button></div>').join('');
+}
+function pintarFotosPendientes() {
+  const box = $('fotosPendientes'); if (!box) return;
+  box.innerHTML = pendingPhotos.map((foto, i) => {
+    if (!pendingPhotoUrls[i]) pendingPhotoUrls[i] = URL.createObjectURL(foto);
+    return '<div class="foto-admin-item"><img class="mini foto-admin-thumb" src="' + pendingPhotoUrls[i] + '" alt="Foto nueva ' + (i + 1) + '" title="Toca para ampliar"><button type="button" class="foto-admin-quitar" data-act="removePhoto" data-source="pending" data-index="' + i + '" aria-label="Eliminar foto nueva ' + (i + 1) + '" title="Eliminar foto">×</button></div>';
+  }).join('');
+}
 function form(tbl, vals = {}, opts = {}, extra = {}) {
+  pendingPhotoUrls.forEach(url => URL.revokeObjectURL(url)); pendingPhotoUrls = [];
+  if (tbl === 'variedades') vals = {...vals, fotos: [...new Set([...(Array.isArray(vals.fotos) ? vals.fotos : []), ...(vals.imagen_url ? [vals.imagen_url] : [])].filter(Boolean))]};
   cur = {tbl, opts, extra, vals};
   const f = $('formulario'); f.hidden = false;
-  f.innerHTML = `<h3>${editId ? 'Editar' : 'Agregar'} registro</h3>${FORMS[tbl].map(c => campo(c, vals, opts)).join('')}${tbl === 'variedades' ? nuevaClasificacion(opts) + tamBlock(vals) : ''}<label>${tbl === 'variedades' ? 'Fotos (selecciona varias; recorte 5:6, hasta 1600 × 1920 px)' : 'Foto (recorte 5:6, hasta 1600 × 1920 px)'}<input type="file" name="foto" accept="image/*" ${tbl === 'variedades' ? 'multiple' : ''}></label>${vals.imagen_url ? `<div class="foto-admin-preview">${(Array.isArray(vals.fotos)&&vals.fotos.length?vals.fotos:[vals.imagen_url]).map(url=>`<img src="${esc(url)}" alt="Foto del producto">`).join('')}</div>` : ''}<div id="fotosPendientes" class="foto-admin-preview"></div><div class="acciones"><button type="submit">${editId ? 'Guardar cambios' : 'Agregar'}</button>${editId ? '<button type="button" class="btn-secundario" data-act="cancel">Cancelar</button>' : ''}</div><p id="msgForm" class="error"></p>`;
+  f.innerHTML = `<h3>${editId ? 'Editar' : 'Agregar'} registro</h3>${FORMS[tbl].map(c => campo(c, vals, opts)).join('')}${tbl === 'variedades' ? nuevaClasificacion(opts) + tamBlock(vals) : ''}<label>${tbl === 'variedades' ? 'Fotos (selecciona varias; recorte 5:6, hasta 1600 × 1920 px)' : 'Foto (recorte 5:6, hasta 1600 × 1920 px)'}<input type="file" name="foto" accept="image/*" ${tbl === 'variedades' ? 'multiple' : ''}></label>${fotosActualesHtml(tbl, vals)}<div id="fotosPendientes" class="foto-admin-preview"></div><div class="acciones"><button type="submit">${editId ? 'Guardar cambios' : 'Agregar'}</button>${editId ? '<button type="button" class="btn-secundario" data-act="cancel">Cancelar</button>' : ''}</div><p id="msgForm" class="error"></p>`;
 
   pendingPhotos = []; photoQueue = [];
   const selectorFamilia = $('selectorFamilia'), bloqueNuevo = $('nuevaClasificacion'), categoriaNueva = $('categoriaNuevaSelect'), nombreCategoriaWrap = $('nombreCategoriaWrap'), nombreCategoriaNueva = $('nombreCategoriaNueva'), nombreFamiliaNueva = $('nombreFamiliaNueva');
   if (selectorFamilia) selectorFamilia.onchange = () => { const mostrar = selectorFamilia.value === '__new'; bloqueNuevo.classList.toggle('oculto', !mostrar); categoriaNueva.required = mostrar; nombreFamiliaNueva.required = mostrar; };
   if (categoriaNueva) categoriaNueva.onchange = () => { const nuevo = categoriaNueva.value === '__newcat'; nombreCategoriaWrap.classList.toggle('oculto', !nuevo); nombreCategoriaNueva.required = nuevo; };
   const fileInput = f.querySelector('input[type="file"]');
+  pintarFotosExistentes(); pintarFotosPendientes();
   if (fileInput) {
     fileInput.onchange = e => {
       photoQueue = [...e.target.files]; abrirSiguienteRecorte();
@@ -171,6 +190,8 @@ $('formulario').addEventListener('submit', async e => {
   msg.textContent = 'Guardando…';
   try {
     for (const [k,, t] of FORMS[cur.tbl]) o[k] = t === 'check' ? fd.has(k) : k === 'tipo_id' ? (fd.get(k) === '__new' ? null : Number(fd.get(k) || 0)) : (fd.get(k) || '').trim() || (k === 'descripcion_larga' ? '' : null);
+    if (cur.tbl === 'variedades') { o.fotos = [...cur.vals.fotos]; o.imagen_url = o.fotos[0] || null; }
+    if (cur.tbl === 'categorias') o.imagen_url = cur.vals.imagen_url || null;
     if (cur.tbl === 'variedades' && fd.get('tipo_id') === '__new') {
       const familiaNombre = $('nombreFamiliaNueva').value.trim();
       let categoriaId = $('categoriaNuevaSelect').value;
@@ -191,9 +212,8 @@ $('formulario').addEventListener('submit', async e => {
       msg.textContent = 'Subiendo fotos…';
       const nuevas = await Promise.all(pendingPhotos.map(subir));
       if (cur.tbl === 'variedades') {
-        const existentes = Array.isArray(cur.vals?.fotos) ? cur.vals.fotos : (cur.vals?.imagen_url ? [cur.vals.imagen_url] : []);
-        o.fotos = [...new Set([...existentes, ...nuevas])];
-        o.imagen_url = cur.vals?.imagen_url || nuevas[0];
+        o.fotos = [...new Set([...(cur.vals.fotos || []), ...nuevas])];
+        o.imagen_url = o.fotos[0] || nuevas[0] || null;
       } else o.imagen_url = nuevas[0];
     }
     let pres = null;
@@ -216,6 +236,17 @@ document.addEventListener('click', e => {
 document.addEventListener('click', async e => {
   const b = e.target.closest('button[data-act]'); if (!b) return;
   const {act, t, id} = b.dataset;
+  if (act === 'removePhoto') {
+    const index = Number(b.dataset.index);
+    if (b.dataset.source === 'existing') {
+      if (cur.tbl === 'variedades') cur.vals.fotos.splice(index, 1);
+      else cur.vals.imagen_url = null;
+    }
+    else { pendingPhotos.splice(index, 1); const objectUrl = pendingPhotoUrls.splice(index, 1)[0]; if (objectUrl) URL.revokeObjectURL(objectUrl); }
+    if (cur.tbl === 'variedades') cur.vals.imagen_url = cur.vals.fotos[0] || null;
+    if (cur.tbl === 'variedades' || cur.tbl === 'categorias') { pintarFotosExistentes(); pintarFotosPendientes(); }
+    return;
+  }
   if (act === 'cancel') return vista();
   if (act === 'edit') { editId = id; form(cur.tbl, cache[t][id], cur.opts, cur.extra); return $('formulario').scrollIntoView({behavior: 'smooth'}); }
   let r;
@@ -239,11 +270,23 @@ document.addEventListener('change', async e => {
   const {error} = await sb.from('pedidos').update({estado: s.value}).eq('id', s.dataset.id);
   if (error) alert('Error: ' + error.message); else { s.className = `estado-select estado-${claseEstado(s.value)}`; stats(); if (s.value === 'Entregado') vista(); }
 });
-function mostrar(ok) { $('login').classList.toggle('oculto', ok); $('panel').classList.toggle('oculto', !ok); $('btnSalir').classList.toggle('oculto', !ok); if (ok) vista(); }
+function mostrar(ok) { $('login').classList.toggle('oculto', ok); $('panel').classList.toggle('oculto', !ok); $('btnSalir').classList.toggle('oculto', !ok); $('adminNavToggle').classList.toggle('oculto', !ok); if (!ok) cerrarMenuAdmin(); if (ok) vista(); }
+function cerrarMenuAdmin() { $('adminSidebar').classList.remove('mobile-open'); $('adminNavBackdrop').classList.add('oculto'); $('adminNavToggle').setAttribute('aria-expanded','false'); $('adminNavToggle').innerHTML='&#9776; <span>Men&uacute;</span>'; }
+$('adminNavToggle').addEventListener('click', () => { const open = !$('adminSidebar').classList.contains('mobile-open'); $('adminSidebar').classList.toggle('mobile-open', open); $('adminNavBackdrop').classList.toggle('oculto', !open); $('adminNavToggle').setAttribute('aria-expanded', String(open)); $('adminNavToggle').innerHTML = open ? '&#10005; <span>Cerrar</span>' : '&#9776; <span>Men&uacute;</span>'; });
+$('adminNavBackdrop').addEventListener('click', cerrarMenuAdmin);
+$('adminSidebar').querySelectorAll('nav a').forEach(a => a.addEventListener('click', cerrarMenuAdmin));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarMenuAdmin(); });
 $('formLogin').addEventListener('submit', async e => {
   e.preventDefault(); $('msgLogin').textContent = 'Entrando…';
   const {error} = await sb.auth.signInWithPassword({email: $('email').value.trim(), password: $('password').value});
   if (error) $('msgLogin').textContent = 'Correo o contraseña incorrectos.'; else { $('msgLogin').textContent = ''; mostrar(true); }
+});
+ $('togglePassword').addEventListener('click', () => {
+  const password = $('password'), mostrarClave = password.type === 'password';
+  password.type = mostrarClave ? 'text' : 'password';
+  $('togglePassword').textContent = mostrarClave ? 'Ocultar' : 'Mostrar';
+  $('togglePassword').setAttribute('aria-label', mostrarClave ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  $('togglePassword').setAttribute('aria-pressed', String(mostrarClave));
 });
 $('btnSalir').onclick = async () => { await sb.auth.signOut(); mostrar(false); };
 addEventListener('hashchange', () => $('panel').classList.contains('oculto') || vista());
@@ -261,7 +304,7 @@ $("btnCropConfirm").onclick = () => {
   canvas.toBlob(blob => {
     pendingPhotos.push(new File([blob], `foto-${Date.now()}-${pendingPhotos.length + 1}.jpg`, { type: "image/jpeg" }));
     $("modalCrop").classList.add("oculto");
-    const preview = $('fotosPendientes'); if (preview) preview.innerHTML = pendingPhotos.map((f, i) => `<img src="${URL.createObjectURL(f)}" alt="Foto nueva ${i + 1}">`).join('');
+    pintarFotosPendientes();
     if (cropper) { cropper.destroy(); cropper = null; }
     abrirSiguienteRecorte();
   }, "image/jpeg", 0.88);
