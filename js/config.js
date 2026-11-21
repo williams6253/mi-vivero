@@ -2,7 +2,7 @@ const NOMBRE_NEGOCIO = "Amazonia Verde";
 const SUPABASE_URL = "https://gbhspdtosvrpmwqpccdi.supabase.co";
 const SUPABASE_KEY = "sb_publishable_TGXEVRDkr9j7Vzjea5OGGQ_Z0xzwJHy";
 const MONEDA = "S/";
-const WHATSAPP = "51925649895";
+const WHATSAPP = "51931198998";
 const CONTACT_EMAIL = "amazoniaverdeweb@gmail.com";
 
 const db = typeof supabase !== "undefined" && SUPABASE_URL && SUPABASE_KEY
